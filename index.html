@@ -1,0 +1,2878 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Grup WhatsApp - Komunitas Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== VARIABLES & RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #25D366;
+            --secondary-color: #075E54;
+            --accent-color: #128C7E;
+            --light-color: #dcf8c6;
+            --dark-color: #0a3d2f;
+            --text-color: #333;
+            --light-bg: #f5f5f5;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --dark-bg: #1a1a1a;
+            --dark-text: #f0f0f0;
+            --sidebar-width: 280px;
+            --header-height: 70px;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== PARTICLE BACKGROUND ===== */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* ===== CUSTOM CURSOR ===== */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+        }
+
+        .cursor-follower {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.3s ease;
+        }
+
+        /* ===== GLASSMORPHISM ===== */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
+            border-radius: 15px;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
+            color: white;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .menu-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* ===== DARK MODE TOGGLE ===== */
+        .theme-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .theme-checkbox {
+            display: none;
+        }
+
+        .theme-label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-color);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-label:after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
+        .theme-checkbox:checked + .theme-label {
+            background-color: var(--primary-color);
+        }
+
+        .theme-checkbox:checked + .theme-label:after {
+            transform: translateX(30px);
+        }
+
+        .theme-label i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+        }
+
+        .theme-label .fa-sun {
+            left: 8px;
+            color: #ffd700;
+        }
+
+        .theme-label .fa-moon {
+            right: 8px;
+            color: #f0f0f0;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: var(--header-height);
+            left: -100%;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height));
+            background-color: white;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            transition: left 0.4s ease;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        body.dark-mode .sidebar {
+            background-color: #2a2a2a;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            border-bottom: 1px solid #eee;
+        }
+
+        body.dark-mode .sidebar-menu li {
+            border-bottom: 1px solid #444;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        body.dark-mode .sidebar-menu a {
+            color: var(--dark-text);
+        }
+
+        .sidebar-menu a:hover {
+            background-color: var(--light-color);
+            color: var(--secondary-color);
+            padding-left: 30px;
+        }
+
+        .sidebar-menu a.active {
+            background-color: var(--light-color);
+            color: var(--secondary-color);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            font-size: 20px;
+            margin-right: 15px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-top: calc(var(--header-height) + 20px);
+            transition: all 0.3s ease;
+            padding-bottom: 40px;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-color);
+            display: flex;
+            align-items: center;
+        }
+
+        body.dark-mode .section-title {
+            color: var(--primary-color);
+        }
+
+        .section-title i {
+            margin-right: 10px;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero-section {
+            padding: 60px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, -50px) rotate(360deg); }
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        /* ===== ADMIN SECTION ===== */
+        .admin-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        /* 3D CARD FLIP EFFECT */
+        .admin-card {
+            perspective: 1000px;
+            height: 300px;
+        }
+
+        .admin-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .admin-card:hover .admin-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .admin-card-front, .admin-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .admin-card-front {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+        }
+
+        body.dark-mode .admin-card-front {
+            background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+            box-shadow: 20px 20px 60px #1a1a1a, -20px -20px 60px #2a2a2a;
+        }
+
+        .admin-card-back {
+            background: linear-gradient(145deg, var(--primary-color), var(--accent-color));
+            color: white;
+            transform: rotateY(180deg);
+            justify-content: center;
+        }
+
+        .admin-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--light-color);
+            margin-bottom: 15px;
+        }
+
+        .admin-name {
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .admin-role {
+            color: var(--accent-color);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        body.dark-mode .admin-role {
+            color: var(--light-color);
+        }
+
+        /* ===== MEMBERS SECTION ===== */
+        .members-container {
+            margin-top: 30px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background-color: #e8e8e8;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.dark-mode .filter-btn {
+            background-color: #333;
+            color: var(--dark-text);
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .member-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .member-card {
+            background: #2a2a2a;
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .member-photo-container {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .member-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .member-card:hover .member-photo {
+            transform: scale(1.1);
+        }
+
+        .member-info {
+            padding: 20px;
+        }
+
+        .member-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .member-bio {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        body.dark-mode .member-bio {
+            color: #aaa;
+        }
+
+        .member-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+        }
+
+        /* ===== POLLING SECTION ===== */
+        .poll-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        body.dark-mode .poll-container {
+            background: #2a2a2a;
+        }
+
+        .poll-question {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: var(--secondary-color);
+        }
+
+        body.dark-mode .poll-question {
+            color: var(--primary-color);
+        }
+
+        .poll-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .poll-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .poll-option {
+            background: #333;
+        }
+
+        .poll-option:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        body.dark-mode .poll-option:hover {
+            background: #444;
+        }
+
+        .poll-option input {
+            display: none;
+        }
+
+        .poll-option label {
+            flex: 1;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .poll-bar {
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 4px;
+            margin-top: 8px;
+            transition: width 1s ease;
+        }
+
+        .poll-results {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #eee;
+        }
+
+        body.dark-mode .poll-results {
+            border-top: 1px solid #444;
+        }
+
+        .poll-stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* ===== CHAT SECTION ===== */
+        .chat-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark-mode .chat-container {
+            background: #2a2a2a;
+        }
+
+        .chat-header {
+            background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
+            color: white;
+            padding: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 12px 15px;
+            border-radius: 15px;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background: var(--light-color);
+            border-bottom-right-radius: 5px;
+        }
+
+        body.dark-mode .message.sent {
+            background: #075E54;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background: #f0f0f0;
+            border-bottom-left-radius: 5px;
+        }
+
+        body.dark-mode .message.received {
+            background: #333;
+        }
+
+        .message-sender {
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            color: var(--accent-color);
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: #999;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 20px;
+            border-top: 1px solid #eee;
+            background: #f9f9f9;
+        }
+
+        body.dark-mode .chat-input {
+            background: #333;
+            border-top: 1px solid #444;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        body.dark-mode .chat-input input {
+            background: #2a2a2a;
+            border-color: #444;
+            color: var(--dark-text);
+        }
+
+        .chat-input button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            background: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        /* ===== FORUM SECTION ===== */
+        .forum-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .forum-thread {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .forum-thread {
+            background: #2a2a2a;
+        }
+
+        .forum-thread:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .forum-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .forum-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .forum-author {
+            flex: 1;
+        }
+
+        .forum-author-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .forum-time {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        .forum-content {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .forum-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .forum-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .forum-btn {
+            background: #333;
+            color: var(--dark-text);
+        }
+
+        .forum-btn:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .forum-btn:hover {
+            background: #444;
+        }
+
+        .forum-btn.liked {
+            color: #e74c3c;
+        }
+
+        /* ===== CALENDAR SECTION ===== */
+        .calendar-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .calendar-container {
+            background: #2a2a2a;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .calendar-nav-btn {
+            background: #333;
+            color: var(--dark-text);
+        }
+
+        .calendar-nav-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-day {
+            text-align: center;
+            font-weight: bold;
+            color: var(--accent-color);
+            padding: 10px;
+        }
+
+        .calendar-date {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .calendar-date:hover {
+            background: #f0f0f0;
+        }
+
+        body.dark-mode .calendar-date:hover {
+            background: #333;
+        }
+
+        .calendar-date.event {
+            background: var(--light-color);
+            font-weight: bold;
+        }
+
+        body.dark-mode .calendar-date.event {
+            background: #075E54;
+        }
+
+        .calendar-date.selected {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .event-dot {
+            position: absolute;
+            bottom: 5px;
+            width: 6px;
+            height: 6px;
+            background: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .calendar-events {
+            margin-top: 30px;
+        }
+
+        .calendar-event {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        body.dark-mode .calendar-event {
+            background: #333;
+        }
+
+        .event-time {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        /* ===== LEADERBOARD SECTION ===== */
+        .leaderboard-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .leaderboard-container {
+            background: #2a2a2a;
+        }
+
+        .leaderboard-header {
+            background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
+            color: white;
+            padding: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .leaderboard-list {
+            padding: 20px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard-item:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+        body.dark-mode .leaderboard-item:hover {
+            background: #333;
+        }
+
+        .leaderboard-rank {
+            font-weight: bold;
+            font-size: 1.2rem;
+            width: 40px;
+            text-align: center;
+        }
+
+        .leaderboard-item:nth-child(1) .leaderboard-rank {
+            color: #ffd700;
+        }
+
+        .leaderboard-item:nth-child(2) .leaderboard-rank {
+            color: #c0c0c0;
+        }
+
+        .leaderboard-item:nth-child(3) .leaderboard-rank {
+            color: #cd7f32;
+        }
+
+        .leaderboard-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .leaderboard-info {
+            flex: 1;
+        }
+
+        .leaderboard-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .leaderboard-points {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+
+        .leaderboard-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* ===== GALLERY SECTION ===== */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 1;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 20px;
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* ===== ACHIEVEMENTS SECTION ===== */
+        .achievements-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .achievement-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-mode .achievement-card {
+            background: #2a2a2a;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .achievement-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .achievement-card.unlocked .achievement-icon {
+            color: #ffd700;
+        }
+
+        .achievement-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .achievement-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        body.dark-mode .achievement-desc {
+            color: #aaa;
+        }
+
+        .achievement-progress {
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        body.dark-mode .achievement-progress {
+            background: #333;
+        }
+
+        .achievement-progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 1s ease;
+        }
+
+        .achievement-status {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* ===== ANALYTICS SECTION ===== */
+        .analytics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .analytics-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode .analytics-card {
+            background: #2a2a2a;
+        }
+
+        .analytics-title {
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        body.dark-mode .analytics-title {
+            color: var(--primary-color);
+        }
+
+        .analytics-chart {
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            padding: 20px 0;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: var(--light-color);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: height 1s ease;
+        }
+
+        body.dark-mode .chart-bar {
+            background: #333;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+
+        .chart-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        body.dark-mode .chart-label {
+            color: #aaa;
+        }
+
+        .analytics-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        body.dark-mode .stat-item {
+            background: #333;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        body.dark-mode .stat-label {
+            color: #aaa;
+        }
+
+        /* ===== FILE SHARING SECTION ===== */
+        .files-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .file-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .file-card {
+            background: #2a2a2a;
+        }
+
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .file-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            word-break: break-all;
+        }
+
+        .file-meta {
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            gap: 15px;
+        }
+
+        body.dark-mode .file-meta {
+            color: #aaa;
+        }
+
+        .file-download {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .file-download:hover {
+            background: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* ===== WHATSAPP FLOATING BUTTON ===== */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.6);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .admin-container,
+            .members-grid,
+            .gallery-container,
+            .achievements-container,
+            .analytics-container,
+            .files-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
+            
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 5px;
+            }
+            
+            .calendar-date {
+                font-size: 0.9rem;
+            }
+            
+            .whatsapp-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+            
+            .chat-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <div class="logo-container">
+                <i class="fab fa-whatsapp logo"></i>
+                <div class="group-info">
+                    <h1>𔕪𝐓𝐀𝐆 𝐒𝐖⛧ 🪼 ᮫ </h1>
+                    <p></p>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="theme-toggle">
+                    <input type="checkbox" id="themeSwitch" class="theme-checkbox">
+                    <label for="themeSwitch" class="theme-label">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar Menu -->
+    <nav class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="#home" class="nav-link active" data-section="home"><i class="fas fa-home"></i> Beranda</a></li>
+            <li><a href="#admin" class="nav-link" data-section="admin"><i class="fas fa-crown"></i> Admin Grup</a></li>
+            <li><a href="#members" class="nav-link" data-section="members"><i class="fas fa-users"></i> Anggota</a></li>
+            <li><a href="#poll" class="nav-link" data-section="poll"><i class="fas fa-poll"></i> Voting</a></li>
+            <li><a href="#chat" class="nav-link" data-section="chat"><i class="fas fa-comments"></i> </a></li>
+            <li><a href="#forum" class="nav-link" data-section="forum"><i class="fas fa-comment-dots"></i> Forum</a></li>
+            <li><a href="#calendar" class="nav-link" data-section="calendar"><i class="fas fa-calendar-alt"></i> Kalender</a></li>
+            <li><a href="#leaderboard" class="nav-link" data-section="leaderboard"><i class="fas fa-trophy"></i> Leaderboard</a></li>
+            <li><a href="#gallery" class="nav-link" data-section="gallery"><i class="fas fa-images"></i> Galeri</a></li>
+            <li><a href="#achievements" class="nav-link" data-section="achievements"><i class="fas fa-award"></i> Achievement</a></li>
+            <li><a href="#analytics" class="nav-link" data-section="analytics"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            <li><a href="#files" class="nav-link" data-section="files"><i class="fas fa-folder"></i> File Sharing</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero-section glass-card">
+                <h1 class="hero-title">Selamat Datang!</h1>
+                <p class="hero-subtitle">Grup WhatsApp terbaik dengan berbagai fitur canggih untuk menghubungkan anggota dan meningkatkan kolaborasi.</p>
+                <div style="margin-top: 30px;">
+                    <button class="filter-btn" onclick="navigateToSection('members')">
+                        <i class="fas fa-users"></i> Lihat Anggota
+                    </button>
+                    <button class="filter-btn" onclick="navigateToSection('chat')" style="background: var(--primary-color); color: white;">
+                        <i class="fas fa-comment"></i> Mulai Chat
+                    </button>
+                </div>
+            </div>
+            
+            <div class="analytics-container" style="margin-top: 30px;">
+                <div class="analytics-card glass-card">
+                    <h3 class="analytics-title"><i class="fas fa-user-friends"></i> Statistik Grup</h3>
+                    <div class="analytics-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalMembers">2++</div>
+                            <div class="stat-label">Total Anggota</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="activeMembers">89</div>
+                            <div class="stat-label">Aktif Hari Ini</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalMessages">2.4K</div>
+                            <div class="stat-label">Pesan/Bulan</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="eventsCount">12</div>
+                            <div class="stat-label">Acara</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Section -->
+        <section id="admin" class="section">
+            <h2 class="section-title"><i class="fas fa-crown"></i> Admin Grup</h2>
+            <div class="admin-container" id="adminContainer"></div>
+        </section>
+
+        <!-- Members Section -->
+        <section id="members" class="section">
+            <h2 class="section-title"><i class="fas fa-users"></i> Anggota Grup</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fas fa-users"></i> Semua
+                </button>
+                <button class="filter-btn" data-filter="active">
+                    <i class="fas fa-bolt"></i> Aktif
+                </button>
+                <button class="filter-btn" data-filter="new">
+                    <i class="fas fa-star"></i> Baru
+                </button>
+                <button class="filter-btn" data-filter="senior">
+                    <i class="fas fa-crown"></i> Senior
+                </button>
+            </div>
+            <div class="members-grid" id="membersGrid"></div>
+        </section>
+
+        <!-- Polling Section -->
+        <section id="poll" class="section">
+            <h2 class="section-title"><i class="fas fa-poll"></i> Voting Grup</h2>
+            <div class="poll-container glass-card">
+                <h3 class="poll-question" id="pollQuestion">Dimana kita akan mengadakan meetup bulan depan?</h3>
+                <div class="poll-options" id="pollOptions"></div>
+                <div class="poll-results" id="pollResults"></div>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat" class="section">
+            <h2 class="section-title"><i class="fas fa-comments"></i> Live Chat</h2>
+            <div class="chat-container glass-card">
+                <div class="chat-header">
+                    <span>Chat Room Grup</span>
+                    <span id="onlineCount">15 online</span>
+                </div>
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input">
+                    <input type="text" id="chatInput" placeholder="Ketik pesan...">
+                    <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Forum Section -->
+        <section id="forum" class="section">
+            <h2 class="section-title"><i class="fas fa-comment-dots"></i> Forum Diskusi</h2>
+            <div class="forum-container" id="forumContainer"></div>
+        </section>
+
+        <!-- Calendar Section -->
+        <section id="calendar" class="section">
+            <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Kalender Acara</h2>
+            <div class="calendar-container glass-card">
+                <div class="calendar-header">
+                    <h3 id="currentMonth">Desember 2025</h3>
+                    <div class="calendar-nav">
+                        <button class="calendar-nav-btn" id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                        <button class="calendar-nav-btn" id="todayBtn">Hari Ini</button>
+                        <button class="calendar-nav-btn" id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendarDays"></div>
+                <div class="calendar-events" id="calendarEvents"></div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section id="leaderboard" class="section">
+            <h2 class="section-title"><i class="fas fa-trophy"></i> Leaderboard</h2>
+            <div class="leaderboard-container glass-card">
+                <div class="leaderboard-header">
+                    <span>Anggota Teraktif</span>
+                    <span>Bulan Ini</span>
+                </div>
+                <div class="leaderboard-list" id="leaderboardList"></div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="section">
+            <h2 class="section-title"><i class="fas fa-images"></i> Galeri Foto</h2>
+            <div class="gallery-container" id="galleryContainer"></div>
+        </section>
+
+        <!-- Achievements Section -->
+        <section id="achievements" class="section">
+            <h2 class="section-title"><i class="fas fa-award"></i> Achievement</h2>
+            <div class="achievements-container" id="achievementsContainer"></div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="section">
+            <h2 class="section-title"><i class="fas fa-chart-bar"></i> Analytics</h2>
+            <div class="analytics-container">
+                <div class="analytics-card glass-card">
+                    <h3 class="analytics-title">Aktivitas Pesan</h3>
+                    <div class="analytics-chart" id="messageChart"></div>
+                </div>
+                <div class="analytics-card glass-card">
+                    <h3 class="analytics-title">Topik Populer</h3>
+                    <div class="analytics-chart" id="topicChart"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- File Sharing Section -->
+        <section id="files" class="section">
+            <h2 class="section-title"><i class="fas fa-folder"></i> File Sharing</h2>
+            <div class="files-container" id="filesContainer"></div>
+        </section>
+    </main>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/+6287816218902?text=Halo%20saya%20ingin%20bergabung%20dengan%20grup%20Tag sw" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Super Grup WhatsApp</h3>
+                    <p>Komunitas digital terbaik untuk berbagi pengetahuan, pengalaman, dan kolaborasi.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Link Cepat</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home"><i class="fas fa-home"></i> Beranda</a></li>
+                        <li><a href="#members"><i class="fas fa-users"></i> Anggota</a></li>
+                        <li><a href="#calendar"><i class="fas fa-calendar"></i> Acara</a></li>
+                        <li><a href="#files"><i class="fas fa-folder"></i> File Sharing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Kontak</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fab fa-whatsapp"></i> +62 878-1621-8902</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> TAGSWgrup</a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Indonesia</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Super Grup WhatsApp. Semua hak dilindungi.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Particle.js Library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // ===== DATA =====
+        const adminData = [
+            {
+                id: 1,
+                name: "princess piaa",
+                role: "Founder & Ketua",
+                photo: "https://raw.githubusercontent.com/JN-doank/Img/refs/heads/main/IMG-20251210-WA0277.jpg",
+                joinDate: "Oktober 2025",
+                bio: "owner/Pendiri grup ."
+            },
+            {
+                id: 2,
+                name: "uwen",
+                role: "Admin ",
+                photo: "",
+                joinDate: "Feb 2021",
+                bio: "Bertanggung jawab atas konten dan moderasi diskusi."
+            },
+            {
+                id: 3,
+                name: "This JAN",
+                role: "Admin Teknis/dev",
+                photo: "https://raw.githubusercontent.com/JN-doank/Img/refs/heads/main/IMG-20251201-WA0245.jpg",
+                joinDate: "Mar 2021",
+                bio: "Atmin yang menjaga infrastruktur digital grup."
+            }
+        ];
+
+        const membersData = [
+            {
+                id: 1,
+                name: "Rain",
+                bio: "Member Tag sw grup",
+                photo: "https://raw.githubusercontent.com/JN-doank/Img-member/refs/heads/main/IMG-20251210-WA0264(1).jpg",
+                joinDate: "",
+                status: "active",
+                category: "new",
+                points: 1250,
+                messages: 245
+            },
+            {
+                id: 2,
+                name: "tak tau",
+                bio: "Member tag sw grup",
+                photo: "https://raw.githubusercontent.com/JN-doank/Img-member/refs/heads/main/IMG-20251210-WA0263.jpg",
+                joinDate: "Des 2022",
+                status: "active",
+                category: "active",
+                points: 1890,
+                messages: 412
+            },
+            {
+                id: 3,
+                name: "Maya Indah",
+                bio: "Member Tag sw grup",
+                photo: "https://raw.githubusercontent.com/JN-doank/Img-member/refs/heads/main/IMG-20251210-WA0265(1).jpg",
+                joinDate: "",
+                status: "active",
+                category: "active",
+                points: 1560,
+                messages: 321
+            },
+            {
+                id: 4,
+                name: "Ky",
+                bio: "Member Tag sw grup",
+                photo: "https://raw.githubusercontent.com/JN-doank/Img-member/refs/heads/main/IMG-20251214-WA0038.jpg",
+                joinDate: "",
+                status: "active",
+                category: "senior",
+                points: 2450,
+                messages: 589
+            },
+            {
+                id: 5,
+                name: "tak tau namanya",
+                bio: "Member Tag sw grup",
+                photo: "https://raw.githubusercontent.com/JN-doank/Img-member/refs/heads/main/IMG-20251210-WA0293.jpg",
+                joinDate: "",
+                status: "active",
+                category: "senior",
+                points: 2120,
+                messages: 478
+            },
+            {
+                id: 6,
+                name: "Agus Salim",
+                bio: "IT Consultant untuk perusahaan multinasional",
+                photo: "",
+                joinDate: "",
+                status: "active",
+                category: "senior",
+                points: 2780,
+                messages: 645
+            },
+                        {
+                id: 7,
+                name: "JN",
+                bio: "IT Consultant untuk perusahaan multinasional",
+                photo: "",
+                joinDate: "Jun 2022",
+                status: "active",
+                category: "senior",
+                points: 2780,
+                messages: 645
+            },
+                        {
+                id: 8,
+                name: "Agus Salim",
+                bio: "IT Consultant untuk perusahaan multinasional",
+                photo: "https://randomuser.me/api/portraits/men/75.jpg",
+                joinDate: "Jun 2022",
+                status: "active",
+                category: "senior",
+                points: 2780,
+                messages: 645
+            },
+                        {
+                id: 9,
+                name: "Agus Salim",
+                bio: "IT Consultant untuk perusahaan multinasional",
+                photo: "https://randomuser.me/api/portraits/men/75.jpg",
+                joinDate: "Jun 2022",
+                status: "active",
+                category: "senior",
+                points: 2780,
+                messages: 645
+            },
+                        {
+                id: 10,
+                name: "Agus Salim",
+                bio: "IT Consultant untuk perusahaan multinasional",
+                photo: "https://randomuser.me/api/portraits/men/75.jpg",
+                joinDate: "Jun 2022",
+                status: "active",
+                category: "senior",
+                points: 2780,
+                messages: 645
+            },
+                        {
+                id: 11,
+                name: "Agus Salim",
+                bio: "IT Consultant untuk perusahaan multinasional",
+                photo: "https://randomuser.me/api/portraits/men/75.jpg",
+                joinDate: "Jun 2022",
+                status: "active",
+                category: "senior",
+                points: 2780,
+                messages: 645
+            },
+                        {
+                id: 12,
+                name: "Agus Salim",
+                bio: "IT Consultant untuk perusahaan multinasional",
+                photo: "https://randomuser.me/api/portraits/men/75.jpg",
+                joinDate: "Jun 2022",
+                status: "active",
+                category: "senior",
+                points: 2780,
+                messages: 645
+            },
+                        {
+                id: 13,
+                name: "Agus Salim",
+                bio: "IT Consultant untuk perusahaan multinasional",
+                photo: "https://randomuser.me/api/portraits/men/75.jpg",
+                joinDate: "Jun 2022",
+                status: "active",
+                category: "senior",
+                points: 2780,
+                messages: 645
+            },
+                        {
+                id: 14,
+                name: "Agus Salim",
+                bio: "IT Consultant untuk perusahaan multinasional",
+                photo: "https://randomuser.me/api/portraits/men/75.jpg",
+                joinDate: "Jun 2022",
+                status: "active",
+                category: "senior",
+                points: 2780,
+                messages: 645
+            },
+                        {
+                id: 15,
+                name: "Agus Salim",
+                bio: "IT Consultant untuk perusahaan multinasional",
+                photo: "https://randomuser.me/api/portraits/men/75.jpg",
+                joinDate: "Jun 2022",
+                status: "active",
+                category: "senior",
+                points: 2780,
+                messages: 645
+            }
+        ];
+
+        const pollData = {
+            question: "ajukan vote mu denggan cara tap tap :)",
+            
+            options: [
+                { id: 1, text: "Bagaimana kualitas grup", votes: 0 },
+                { id: 2, text: "apa kamu betah di grup TAG SW ", votes: 0 },
+                { id: 3, text: "apakah ada orang yg melakukan bulying terhadap memeber/kamu", votes: 0 },
+                
+                { id: 4, text: "Apa kamu betah di grup TAG SW ", votes: 0 }
+            ],
+            totalVotes: 120
+        };
+
+        const chatMessages = [
+            { id: 1, sender: "Admin", text: "Selamat datang di chat room grup!", time: "10:00", type: "received" },
+            { id: 2, sender: "Budi", text: "Halo semua! Ada yang ikut meetup besok?", time: "10:05", type: "received" },
+            { id: 3, sender: "Anda", text: "Saya ikut! Jam berapa mulai?", time: "10:08", type: "sent" },
+            { id: 4, sender: "Siti", text: "Jam 7 malam di kafe Digital", time: "10:10", type: "received" }
+        ];
+
+        const forumPosts = [
+            {
+                id: 1,
+                author: "Agus Salim",
+                avatar: "https://randomuser.me/api/portraits/men/75.jpg",
+                time: "2 jam yang lalu",
+                content: "Ada yang punya rekomendasi laptop untuk programming? Budget sekitar 15 juta.",
+                likes: 12,
+                comments: 5
+            },
+            {
+                id: 2,
+                author: "Maya Indah",
+                avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+                time: "5 jam yang lalu",
+                content: "Baru saja launching website portfolio baru! Boleh dikunjungi di mayaindah.design",
+                likes: 24,
+                comments: 8
+            },
+            {
+                id: 3,
+                author: "Hendra Wijaya",
+                avatar: "https://randomuser.me/api/portraits/men/55.jpg",
+                time: "1 hari yang lalu",
+                content: "Mau sharing pengalaman scaling bisnis kuliner dari 1 outlet ke 10 outlet dalam 2 tahun.",
+                likes: 45,
+                comments: 15
+            }
+        ];
+
+        const eventsData = [
+            { id: 1, title: "Meetup Mingguan", date: "2023-12-15", time: "19:00", location: "Kafe Digital" },
+            { id: 2, title: "Workshop Digital Marketing", date: "2023-12-20", time: "14:00", location: "Online" },
+            { id: 3, title: "Sharing Session: Startup Funding", date: "2023-12-25", time: "10:00", location: "Co-working Space" }
+        ];
+
+        const leaderboardData = [
+            { rank: 1, name: "Agus Salim", avatar: "https://randomuser.me/api/portraits/men/75.jpg", points: 2780, badge: "Top Contributor" },
+            { rank: 2, name: "Hendra Wijaya", avatar: "https://randomuser.me/api/portraits/men/55.jpg", points: 2450, badge: "Active Member" },
+            { rank: 3, name: "Dewi Lestari", avatar: "https://randomuser.me/api/portraits/women/26.jpg", points: 2120, badge: "Content King" },
+            { rank: 4, name: "Faisal Rahman", avatar: "https://randomuser.me/api/portraits/men/22.jpg", points: 1890, badge: "Rising Star" },
+            { rank: 5, name: "Maya Indah", avatar: "https://randomuser.me/api/portraits/women/68.jpg", points: 1560, badge: "Active Member" }
+        ];
+
+        const galleryData = [
+            { id: 1, title: "Meetup Desember 2023", image: "https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" },
+            { id: 2, title: "Workshop November", image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" },
+            { id: 3, title: "Networking Session", image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" },
+            { id: 4, title: "Award Night 2023", image: "https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" }
+        ];
+
+        const achievementsData = [
+            { id: 1, name: "Anggota Baru", icon: "fas fa-star", description: "Bergabung selama 1 bulan", progress: 100, unlocked: true },
+            { id: 2, name: "Diskusi Aktif", icon: "fas fa-comments", description: "100+ pesan dalam grup", progress: 75, unlocked: false },
+            { id: 3, name: "Event Hunter", icon: "fas fa-calendar-check", description: "Hadiri 5 event", progress: 40, unlocked: false },
+            { id: 4, name: "Top Contributor", icon: "fas fa-trophy", description: "Peringkat 1 leaderboard", progress: 20, unlocked: false }
+        ];
+
+        const filesData = [
+            { id: 1, name: "Guideline Grup.pdf", type: "pdf", size: "2.5 MB", downloads: 120 },
+            { id: 2, name: "Template Presentasi.pptx", type: "ppt", size: "4.2 MB", downloads: 85 },
+            { id: 3, name: "Daftar Anggota.xlsx", type: "excel", size: "1.8 MB", downloads: 45 },
+            { id: 4, name: "Foto Meetup.zip", type: "zip", size: "15.3 MB", downloads: 62 }
+        ];
+
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize all features
+            initParticles();
+            initCustomCursor();
+            initDarkMode();
+            initNavigation();
+            renderAdmins();
+            renderMembers();
+            renderPoll();
+            renderChat();
+            renderForum();
+            initCalendar();
+            renderLeaderboard();
+            renderGallery();
+            renderAchievements();
+            renderAnalytics();
+            renderFiles();
+            
+            // Set initial stats
+            updateStats();
+        });
+
+        // ===== PARTICLE BACKGROUND =====
+        function initParticles() {
+            particlesJS("particles-js", {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#25D366" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#128C7E",
+                        opacity: 0.4,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                },
+                retina_detect: true
+            });
+        }
+
+        // ===== CUSTOM CURSOR =====
+        function initCustomCursor() {
+            const cursor = document.querySelector('.cursor');
+            const cursorFollower = document.querySelector('.cursor-follower');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                
+                setTimeout(() => {
+                    cursorFollower.style.left = e.clientX + 'px';
+                    cursorFollower.style.top = e.clientY + 'px';
+                }, 100);
+            });
+            
+            // Cursor effects on hover
+            const hoverElements = document.querySelectorAll('button, a, .admin-card, .member-card, .gallery-item');
+            hoverElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'scale(1.5)';
+                    cursor.style.borderColor = '#ffd700';
+                    cursorFollower.style.transform = 'scale(1.5)';
+                    cursorFollower.style.backgroundColor = '#ffd700';
+                });
+                
+                el.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'scale(1)';
+                    cursor.style.borderColor = '#25D366';
+                    cursorFollower.style.transform = 'scale(1)';
+                    cursorFollower.style.backgroundColor = '#25D366';
+                });
+            });
+        }
+
+        // ===== DARK MODE =====
+        function initDarkMode() {
+            const themeSwitch = document.getElementById('themeSwitch');
+            const body = document.body;
+            
+            // Check for saved theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                themeSwitch.checked = true;
+            }
+            
+            themeSwitch.addEventListener('change', function() {
+                if (this.checked) {
+                    body.classList.add('dark-mode');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    body.classList.remove('dark-mode');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        }
+
+        // ===== NAVIGATION =====
+        function initNavigation() {
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            menuToggle.addEventListener('click', toggleSidebar);
+            sidebarOverlay.addEventListener('click', closeSidebar);
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = link.getAttribute('data-section');
+                    navigateToSection(sectionId);
+                });
+            });
+            
+            // Close sidebar on escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeSidebar();
+            });
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        function navigateToSection(sectionId) {
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === sectionId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Show section
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Close sidebar on mobile
+            if (window.innerWidth < 768) {
+                closeSidebar();
+            }
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== ADMIN SECTION =====
+        function renderAdmins() {
+            const container = document.getElementById('adminContainer');
+            container.innerHTML = '';
+            
+            adminData.forEach(admin => {
+                const adminCard = document.createElement('div');
+                adminCard.className = 'admin-card';
+                adminCard.innerHTML = `
+                    <div class="admin-card-inner">
+                        <div class="admin-card-front">
+                            <img src="${admin.photo}" alt="${admin.name}" class="admin-photo">
+                            <div class="admin-name">${admin.name}</div>
+                            <div class="admin-role">${admin.role}</div>
+                            <div class="member-stats">
+                                <span><i class="far fa-calendar-alt"></i> ${admin.joinDate}</span>
+                            </div>
+                        </div>
+                        <div class="admin-card-back">
+                            <h3>${admin.name}</h3>
+                            <p>${admin.bio}</p>
+                            <div style="margin-top: 20px;">
+                                <button class="forum-btn" style="background: white; color: var(--primary-color);">
+                                    <i class="fas fa-envelope"></i> Hubungi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(adminCard);
+            });
+        }
+
+        // ===== MEMBERS SECTION =====
+        function renderMembers(filter = 'all') {
+            const container = document.getElementById('membersGrid');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            // Update active filter button
+            filterButtons.forEach(btn => {
+                if (btn.getAttribute('data-filter') === filter) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Filter members
+            let filteredMembers = membersData;
+            if (filter !== 'all') {
+                filteredMembers = membersData.filter(member => member.category === filter);
+            }
+            
+            // Render members
+            container.innerHTML = '';
+            filteredMembers.forEach(member => {
+                const memberCard = document.createElement('div');
+                memberCard.className = 'member-card glass-card';
+                memberCard.innerHTML = `
+                    <div class="member-photo-container">
+                        <img src="${member.photo}" alt="${member.name}" class="member-photo">
+                    </div>
+                    <div class="member-info">
+                        <div class="member-name">${member.name}</div>
+                        <div class="member-bio">${member.bio}</div>
+                        <div class="member-stats">
+                            <span><i class="fas fa-calendar-alt"></i> ${member.joinDate}</span>
+                            <span><i class="fas fa-comment"></i> ${member.messages} pesan</span>
+                            <span><i class="fas fa-star"></i> ${member.points} poin</span>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <button class="forum-btn" onclick="sendMessageTo('${member.name}')">
+                                <i class="fas fa-paper-plane"></i> Kirim Pesan
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(memberCard);
+            });
+            
+            // Add event listeners to filter buttons
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const filter = btn.getAttribute('data-filter');
+                    renderMembers(filter);
+                });
+            });
+        }
+
+        function sendMessageTo(name) {
+            navigateToSection('chat');
+            const chatInput = document.getElementById('chatInput');
+            chatInput.value = `Halo ${name}, `;
+            chatInput.focus();
+        }
+
+        // ===== POLLING SECTION =====
+        function renderPoll() {
+            const questionEl = document.getElementById('pollQuestion');
+            const optionsEl = document.getElementById('pollOptions');
+            const resultsEl = document.getElementById('pollResults');
+            
+            questionEl.textContent = pollData.question;
+            optionsEl.innerHTML = '';
+            resultsEl.innerHTML = '';
+            
+            // Render options
+            pollData.options.forEach(option => {
+                const percentage = Math.round((option.votes / pollData.totalVotes) * 100);
+                const optionEl = document.createElement('div');
+                optionEl.className = 'poll-option';
+                optionEl.innerHTML = `
+                    <input type="radio" name="poll" id="option${option.id}">
+                    <label for="option${option.id}">${option.text}</label>
+                    <div class="poll-bar" style="width: ${percentage}%"></div>
+                `;
+                
+                optionEl.addEventListener('click', () => {
+                    voteForOption(option.id);
+                });
+                
+                optionsEl.appendChild(optionEl);
+            });
+            
+            // Render results
+            const resultsTitle = document.createElement('h4');
+            resultsTitle.textContent = 'Hasil Voting:';
+            resultsEl.appendChild(resultsTitle);
+            
+            pollData.options.forEach(option => {
+                const percentage = Math.round((option.votes / pollData.totalVotes) * 100);
+                const statEl = document.createElement('div');
+                statEl.className = 'poll-stat';
+                statEl.innerHTML = `
+                    <span>${option.text}</span>
+                    <span>${option.votes} suara (${percentage}%)</span>
+                `;
+                resultsEl.appendChild(statEl);
+            });
+            
+            const totalEl = document.createElement('div');
+            totalEl.className = 'poll-stat';
+            totalEl.innerHTML = `
+                <span><strong>Total Suara</strong></span>
+                <span><strong>${pollData.totalVotes}</strong></span>
+            `;
+            resultsEl.appendChild(totalEl);
+        }
+
+        function voteForOption(optionId) {
+            // Find the option
+            const option = pollData.options.find(o => o.id === optionId);
+            if (option) {
+                option.votes++;
+                pollData.totalVotes++;
+                renderPoll();
+                
+                // Show notification
+                showNotification(`Terima kasih! Anda memilih: ${option.text}`);
+            }
+        }
+
+        // ===== CHAT SECTION =====
+        function renderChat() {
+            const messagesEl = document.getElementById('chatMessages');
+            const sendBtn = document.getElementById('sendMessage');
+            const chatInput = document.getElementById('chatInput');
+            
+            // Render existing messages
+            messagesEl.innerHTML = '';
+            chatMessages.forEach(msg => {
+                const messageEl = document.createElement('div');
+                messageEl.className = `message ${msg.type}`;
+                messageEl.innerHTML = `
+                    <div class="message-sender">${msg.sender}</div>
+                    <div class="message-text">${msg.text}</div>
+                    <div class="message-time">${msg.time}</div>
+                `;
+                messagesEl.appendChild(messageEl);
+            });
+            
+            // Scroll to bottom
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+            
+            // Send message function
+            function sendMessage() {
+                const text = chatInput.value.trim();
+                if (text) {
+                    const newMessage = {
+                        id: chatMessages.length + 1,
+                        sender: "Anda",
+                        text: text,
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        type: "sent"
+                    };
+                    
+                    chatMessages.push(newMessage);
+                    chatInput.value = '';
+                    renderChat();
+                    
+                    // Simulate reply after 1 second
+                    setTimeout(() => {
+                        const replies = [
+                            "Terima kasih atas pesannya!",
+                            "Sangat menarik!",
+                            "Bisa dijelaskan lebih detail?",
+                            "Setuju dengan pendapat Anda!"
+                        ];
+                        const randomReply = replies[Math.floor(Math.random() * replies.length)];
+                        
+                        const replyMessage = {
+                            id: chatMessages.length + 1,
+                            sender: "Bot",
+                            text: randomReply,
+                            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                            type: "received"
+                        };
+                        
+                        chatMessages.push(replyMessage);
+                        renderChat();
+                    }, 1000);
+                }
+            }
+            
+            // Event listeners
+            sendBtn.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+            
+            // Update online count randomly
+            setInterval(() => {
+                const onlineCount = Math.floor(Math.random() * 10) + 10;
+                document.getElementById('onlineCount').textContent = `${onlineCount} online`;
+            }, 5000);
+        }
+
+        // ===== FORUM SECTION =====
+        function renderForum() {
+            const container = document.getElementById('forumContainer');
+            container.innerHTML = '';
+            
+            forumPosts.forEach(post => {
+                const postEl = document.createElement('div');
+                postEl.className = 'forum-thread glass-card';
+                postEl.innerHTML = `
+                    <div class="forum-header">
+                        <img src="${post.avatar}" alt="${post.author}" class="forum-avatar">
+                        <div class="forum-author">
+                            <div class="forum-author-name">${post.author}</div>
+                            <div class="forum-time">${post.time}</div>
+                        </div>
+                    </div>
+                    <div class="forum-content">${post.content}</div>
+                    <div class="forum-actions">
+                        <button class="forum-btn like-btn" data-id="${post.id}">
+                            <i class="far fa-thumbs-up"></i> ${post.likes}
+                        </button>
+                        <button class="forum-btn comment-btn">
+                            <i class="far fa-comment"></i> ${post.comments}
+                        </button>
+                        <button class="forum-btn share-btn">
+                            <i class="fas fa-share"></i> Bagikan
+                        </button>
+                    </div>
+                `;
+                container.appendChild(postEl);
+            });
+            
+            // Add like functionality
+            document.querySelectorAll('.like-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const postId = this.getAttribute('data-id');
+                    const likesEl = this.querySelector('i').nextSibling;
+                    let likes = parseInt(likesEl.textContent.trim());
+                    likes++;
+                    likesEl.textContent = ` ${likes}`;
+                    this.classList.add('liked');
+                    this.innerHTML = `<i class="fas fa-thumbs-up"></i> ${likes}`;
+                    
+                    showNotification('Terima kasih atas like-nya!');
+                });
+            });
+        }
+
+        // ===== CALENDAR SECTION =====
+        function initCalendar() {
+            const currentDate = new Date();
+            let currentMonth = currentDate.getMonth();
+            let currentYear = currentDate.getFullYear();
+            
+            const monthNames = [
+                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+            ];
+            
+            const daysEl = document.getElementById('calendarDays');
+            const monthEl = document.getElementById('currentMonth');
+            const prevBtn = document.getElementById('prevMonth');
+            const nextBtn = document.getElementById('nextMonth');
+            const todayBtn = document.getElementById('todayBtn');
+            
+            function renderCalendar() {
+                // Update month display
+                monthEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+                
+                // Clear previous days
+                daysEl.innerHTML = '';
+                
+                // Add day headers
+                const dayNames = ["M", "S", "S", "R", "K", "J", "S"];
+                dayNames.forEach(day => {
+                    const dayEl = document.createElement('div');
+                    dayEl.className = 'calendar-day';
+                    dayEl.textContent = day;
+                    daysEl.appendChild(dayEl);
+                });
+                
+                // Get first day of month
+                const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+                // Adjust for Monday start
+                const startDay = firstDay === 0 ? 6 : firstDay - 1;
+                
+                // Get days in month
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+                
+                // Add empty cells for start of month
+                for (let i = 0; i < startDay; i++) {
+                    const emptyEl = document.createElement('div');
+                    emptyEl.className = 'calendar-date';
+                    daysEl.appendChild(emptyEl);
+                }
+                
+                // Add days of month
+                const today = new Date();
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateEl = document.createElement('div');
+                    dateEl.className = 'calendar-date';
+                    dateEl.textContent = day;
+                    
+                    // Check if today
+                    if (day === today.getDate() && 
+                        currentMonth === today.getMonth() && 
+                        currentYear === today.getFullYear()) {
+                        dateEl.classList.add('selected');
+                    }
+                    
+                    // Check if has event
+                    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const hasEvent = eventsData.some(event => event.date === dateStr);
+                    
+                    if (hasEvent) {
+                        dateEl.classList.add('event');
+                        const dotEl = document.createElement('div');
+                        dotEl.className = 'event-dot';
+                        dateEl.appendChild(dotEl);
+                        
+                        dateEl.addEventListener('click', () => {
+                            showEventForDate(dateStr);
+                        });
+                    }
+                    
+                    daysEl.appendChild(dateEl);
+                }
+                
+                // Update events list
+                updateEventsList();
+            }
+            
+            function showEventForDate(dateStr) {
+                const event = eventsData.find(e => e.date === dateStr);
+                if (event) {
+                    showNotification(`Acara: ${event.title}\nWaktu: ${event.time}\nTempat: ${event.location}`);
+                }
+            }
+            
+            function updateEventsList() {
+                const eventsList = document.getElementById('calendarEvents');
+                eventsList.innerHTML = '<h4>Acara Mendatang:</h4>';
+                
+                // Filter events for current month
+                const currentMonthEvents = eventsData.filter(event => {
+                    const eventDate = new Date(event.date);
+                    return eventDate.getMonth() === currentMonth && 
+                           eventDate.getFullYear() === currentYear;
+                });
+                
+                if (currentMonthEvents.length === 0) {
+                    eventsList.innerHTML += '<p>Tidak ada acara di bulan ini.</p>';
+                } else {
+                    currentMonthEvents.forEach(event => {
+                        const eventDate = new Date(event.date);
+                        const eventEl = document.createElement('div');
+                        eventEl.className = 'calendar-event';
+                        eventEl.innerHTML = `
+                            <div class="event-time">${eventDate.getDate()} ${monthNames[eventDate.getMonth()]} • ${event.time}</div>
+                            <div class="event-title">${event.title}</div>
+                            <div class="event-location">📍 ${event.location}</div>
+                        `;
+                        eventsList.appendChild(eventEl);
+                    });
+                }
+            }
+            
+            // Event listeners
+            prevBtn.addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                renderCalendar();
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendar();
+            });
+            
+            todayBtn.addEventListener('click', () => {
+                const today = new Date();
+                currentMonth = today.getMonth();
+                currentYear = today.getFullYear();
+                renderCalendar();
+            });
+            
+            // Initial render
+            renderCalendar();
+        }
+
+        // ===== LEADERBOARD SECTION =====
+        function renderLeaderboard() {
+            const container = document.getElementById('leaderboardList');
+            container.innerHTML = '';
+            
+            leaderboardData.forEach(member => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'leaderboard-item glass-card';
+                itemEl.innerHTML = `
+                    <div class="leaderboard-rank">${member.rank}</div>
+                    <img src="${member.avatar}" alt="${member.name}" class="leaderboard-avatar">
+                    <div class="leaderboard-info">
+                        <div class="leaderboard-name">${member.name}</div>
+                        <div class="leaderboard-points">${member.points} poin</div>
+                    </div>
+                    <div class="leaderboard-badge">${member.badge}</div>
+                `;
+                container.appendChild(itemEl);
+            });
+        }
+
+        // ===== GALLERY SECTION =====
+        function renderGallery() {
+            const container = document.getElementById('galleryContainer');
+            container.innerHTML = '';
+            
+            galleryData.forEach(item => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'gallery-item';
+                itemEl.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <div class="gallery-title">${item.title}</div>
+                        <div class="gallery-actions">
+                            <button class="forum-btn" style="background: rgba(255,255,255,0.2); color: white; margin-top: 10px;">
+                                <i class="fas fa-eye"></i> Lihat
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                itemEl.addEventListener('click', () => {
+                    showNotification(`Membuka gambar: ${item.title}`);
+                });
+                
+                container.appendChild(itemEl);
+            });
+        }
+
+        // ===== ACHIEVEMENTS SECTION =====
+        function renderAchievements() {
+            const container = document.getElementById('achievementsContainer');
+            container.innerHTML = '';
+            
+            achievementsData.forEach(achievement => {
+                const achievementEl = document.createElement('div');
+                achievementEl.className = `achievement-card ${achievement.unlocked ? 'unlocked' : ''}`;
+                achievementEl.innerHTML = `
+                    <div class="achievement-icon">
+                        <i class="${achievement.icon}"></i>
+                    </div>
+                    <div class="achievement-name">${achievement.name}</div>
+                    <div class="achievement-desc">${achievement.description}</div>
+                    <div class="achievement-progress">
+                        <div class="achievement-progress-bar" style="width: ${achievement.progress}%"></div>
+                    </div>
+                    <div class="achievement-status">
+                        ${achievement.unlocked ? '✅ Terbuka' : `${achievement.progress}%`}
+                    </div>
+                `;
+                container.appendChild(achievementEl);
+            });
+        }
+
+        // ===== ANALYTICS SECTION =====
+        function renderAnalytics() {
+            // Message activity chart
+            const messageChart = document.getElementById('messageChart');
+            const hours = ['00', '04', '08', '12', '16', '20'];
+            const messages = [45, 30, 25, 85, 120, 95];
+            const maxMessages = Math.max(...messages);
+            
+            messageChart.innerHTML = '';
+            hours.forEach((hour, index) => {
+                const height = (messages[index] / maxMessages) * 100;
+                const barEl = document.createElement('div');
+                barEl.className = 'chart-bar';
+                barEl.style.height = `${height}%`;
+                barEl.innerHTML = `<div class="chart-label">${hour}:00</div>`;
+                messageChart.appendChild(barEl);
+            });
+            
+            // Topic chart
+            const topicChart = document.getElementById('topicChart');
+            const topics = ['Tech', 'Bisnis', 'Hobi', 'Lainnya'];
+            const topicData = [45, 30, 15, 10];
+            const maxTopic = Math.max(...topicData);
+            
+            topicChart.innerHTML = '';
+            topics.forEach((topic, index) => {
+                const height = (topicData[index] / maxTopic) * 100;
+                const barEl = document.createElement('div');
+                barEl.className = 'chart-bar';
+                barEl.style.height = `${height}%`;
+                barEl.innerHTML = `<div class="chart-label">${topic}</div>`;
+                topicChart.appendChild(barEl);
+            });
+        }
+
+        // ===== FILE SHARING SECTION =====
+        function renderFiles() {
+            const container = document.getElementById('filesContainer');
+            container.innerHTML = '';
+            
+            filesData.forEach(file => {
+                const fileEl = document.createElement('div');
+                fileEl.className = 'file-card glass-card';
+                
+                // Get icon based on file type
+                let icon = 'fas fa-file';
+                if (file.type === 'pdf') icon = 'fas fa-file-pdf';
+                if (file.type === 'ppt') icon = 'fas fa-file-powerpoint';
+                if (file.type === 'excel') icon = 'fas fa-file-excel';
+                if (file.type === 'zip') icon = 'fas fa-file-archive';
+                
+                fileEl.innerHTML = `
+                    <div class="file-icon">
+                        <i class="${icon}"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-meta">
+                            <span>${file.size}</span>
+                            <span>${file.downloads} downloads</span>
+                        </div>
+                    </div>
+                    <button class="file-download" onclick="downloadFile('${file.name}')">
+                        <i class="fas fa-download"></i>
+                    </button>
+                `;
+                container.appendChild(fileEl);
+            });
+        }
+
+        function downloadFile(filename) {
+            showNotification(`Mengunduh: ${filename}`);
+            // In a real app, this would trigger actual file download
+        }
+
+        // ===== UTILITY FUNCTIONS =====
+        function updateStats() {
+            // Update statistics
+            document.getElementById('totalMembers').textContent = membersData.length + adminData.length;
+            document.getElementById('activeMembers').textContent = membersData.filter(m => m.status === 'active').length;
+            document.getElementById('totalMessages').textContent = '2.4K';
+            document.getElementById('eventsCount').textContent = eventsData.length;
+        }
+
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas fa-check-circle"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Style the notification
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--primary-color);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 9999;
+                animation: slideInRight 0.3s ease;
+                max-width: 300px;
+            `;
+            
+            // Add animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    notification.remove();
+                    style.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // ===== GLOBAL FUNCTIONS =====
+        window.navigateToSection = navigateToSection;
+        window.sendMessageTo = sendMessageTo;
+        window.downloadFile = downloadFile;
+    </script>
+</body>
+</html>
